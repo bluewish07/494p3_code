@@ -28,9 +28,12 @@ public:
     
     void render();
     
+    void move(const float &x_movement, const float &z_movement, const float y_pos);
+    
     void collide();
     
     const Zeni::Collision::Sphere & get_body() const {return m_body;}
+    Zeni::Vector3f get_origin() const {return m_origin;}
     
 private:
     void create_body();
@@ -44,6 +47,7 @@ private:
     float m_radius;
     Zeni::Vector3f m_scale;
     Zeni::Quaternion m_rotation;
+    Zeni::Vector3f m_origin;
     
     // Level 3
     Zeni::Collision::Sphere m_body; // not motion so much as collision

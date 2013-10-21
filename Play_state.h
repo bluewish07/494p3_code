@@ -11,6 +11,7 @@
 
 #include <zenilib.h>
 #include "Ball.h"
+#include "Game_World.h"
 
 class Play_State : public Zeni::Gamestate_Base {
     Play_State(const Play_State &);
@@ -25,14 +26,23 @@ public:
     
     void on_key(const SDL_KeyboardEvent &event);
     
+    void perform_logic();
+    
     void render();
     
 private:
-    Zeni::Time_HQ time_passed;
+    Zeni::Chronometer<Zeni::Time> m_chrono; 
+    float time_passed;
+    
+    Game_World m_world;
     
     Ball m_ball;
     
     Zeni::Camera m_camera;
+    
+    float z_speed;
+    
+    float time_cycle;
     
     struct Controls {
         Controls() : forward(false), left(false), back(false), right(false) {}

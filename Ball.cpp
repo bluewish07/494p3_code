@@ -22,8 +22,10 @@ m_scale(scale_),
 m_rotation(rotation_)
 {
     if(!m_instance_count)
-        m_model = new Model("models/p4ball.3DS");
+        m_model = new Model("models/p3ball.3DS");
     ++m_instance_count;
+    
+    m_origin = m_center;
     
     create_body();
 }
@@ -35,6 +37,13 @@ Ball::~Ball() {
         delete m_model;
         m_model = 0lu;
     }
+}
+
+void Ball::move(const float &x_movement, const float &z_movement, const float y_pos)
+{
+    m_center.x += x_movement;
+    m_center.y = y_pos;
+    m_center.z = z_movement;
 }
 
 void Ball::render() {
