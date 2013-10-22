@@ -17,20 +17,19 @@ using namespace std;
 // default camera is facing positive-x direction
 // with upside of the camera in neg-z direction
 Play_State::Play_State()
-:time_passed(0), m_world(),
-m_ball(Point3f(0.0f, 100.0f, 0.0f)),
-m_camera(Point3f(0.0f, -100.0f, -250.0f),
+:time_passed(0),
+m_world(),
+m_ball(Point3f(0.0f, 0.0f, 100.0f)),
+m_camera(Point3f(0.0f, -300.0f, 200.0f),
          Quaternion(),
          1.0f, 100000.0f),
-z_speed(10)
+m_velocity(0, 0, 0)
 {
     set_pausable(true);
-    m_camera.adjust_pitch(-Global::pi_over_two); // camera facing pos-z direction
-    m_camera.adjust_roll(Global::pi_over_two); // upside of the camera points pos-y
+    m_camera.adjust_yaw(Global::pi_over_two); // camera facing pos-z direction
+    //m_camera.adjust_roll(Global::pi_over_two); // upside of the camera points pos-y
     //m_camera.adjust_pitch(Global::pi_over_two/2);
     
-    time_cycle = sqrt(2*(m_ball.get_body().get_center().y - m_ball.get_body().get_radius())/(9.8 * 50));
-    cout << "time cycle: " << time_cycle << endl;
 }
 void Play_State::on_push() {
     get_Window().set_mouse_state(Window::MOUSE_HIDDEN);
@@ -69,22 +68,48 @@ void Play_State::perform_logic()
 {
     float time_total = m_chrono.seconds();
     float processing_time = time_total - time_passed;
-    if (processing_time > 0.05) {
-        time_passed = time_total;
+    float time_step = processing_time > 0.005f ? 0.005f : processing_time;
+    for (; processing_time > 0.0f; processing_time -= time_step) {
+        //  Gravity has its effect
+        m_velocity += Vector3f(0.0f, 0.0f, -time_step * 9.8 * 50.0f);
         
-        float z_forward = z_speed * processing_time * 50.f;
-        int num_cycles = time_total / time_cycle;
-        float effective_time = time_total - time_cycle * num_cycles;
-        float height = 0;
-        if (!(num_cycles % 2)) {
-            height = -(m_ball.get_origin().y - .5 * 9.8 * 50 * pow(effective_time, 2));
+        // Try to move
+        bool collided = partial_step(time_step);
+        
+        if (collided) {
+            bounce();
         }
-        else {
-            height = -(m_ball.get_origin().y - .5 * 9.8 * 50 *pow(time_cycle - effective_time, 2));
-        }
-        //cout << height << endl;
-        m_ball.move(0, z_forward, height);
     }
+    
+    time_passed = time_total;
+    
+    
+}
+
+bool Play_State::partial_step(const float &time_step) {
+    bool result = false;
+    const Point3f backup_position = m_ball.get_body().get_center();
+    
+    m_ball.move_to(m_velocity * time_step + backup_position);
+    
+    /** If collision with the plane has occurred, roll things back **/
+    if(m_ball.get_body().intersects(m_world.get_body())) {
+        cout << "collided" << endl;
+        m_ball.move_to(backup_position);
+        result = true;
+        
+    }
+    return result;
+}
+
+void Play_State::bounce()
+{
+    Vector3f plane_normal = m_world.get_body().get_normal();
+    Vector3f projection = plane_normal.normalized() * m_velocity * plane_normal.normalized();
+    Vector3f along_plane = m_velocity - projection;
+    cout << plane_normal.z << " " << projection.x << "," << projection.y << "," << projection.z
+        << "   " << along_plane.x << "," << along_plane.y << "," << along_plane.z << endl;
+    m_velocity = along_plane - projection;
     
     
 }

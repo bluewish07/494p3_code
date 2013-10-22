@@ -9,6 +9,7 @@
 
 #include "Ball.h"
 #include <zenilib.h>
+#include <iostream>
 
 using namespace std;
 using namespace Zeni;
@@ -25,7 +26,8 @@ m_rotation(rotation_)
         m_model = new Model("models/p3ball.3DS");
     ++m_instance_count;
     
-    m_origin = m_center;
+    //m_origin = m_center;
+    //m_model->set_translate(m_center);
     
     create_body();
 }
@@ -39,14 +41,15 @@ Ball::~Ball() {
     }
 }
 
-void Ball::move(const float &x_movement, const float &z_movement, const float y_pos)
+void Ball::move_to(const Point3f &pos)
 {
-    m_center.x += x_movement;
-    m_center.y = y_pos;
-    m_center.z = z_movement;
+    m_center = pos;
+    // cout << pos.z << endl;
+    create_body();
 }
 
 void Ball::render() {
+    // cout << m_center.y << endl;
     const std::pair<Vector3f, float> rotation = m_rotation.get_rotation();
     
     m_model->set_translate(m_center);

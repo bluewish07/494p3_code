@@ -31,6 +31,9 @@ public:
     void render();
     
 private:
+    bool partial_step(const float &time_step);
+    void bounce();
+    
     Zeni::Chronometer<Zeni::Time> m_chrono; 
     float time_passed;
     
@@ -40,7 +43,7 @@ private:
     
     Zeni::Camera m_camera;
     
-    float z_speed;
+    Zeni::Vector3f m_velocity;
     
     float time_cycle;
     

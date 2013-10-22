@@ -28,7 +28,7 @@ public:
     
     void render();
     
-    void move(const float &x_movement, const float &z_movement, const float y_pos);
+    void move_to(const Zeni::Point3f &pos);
     
     void collide();
     

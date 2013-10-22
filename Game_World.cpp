@@ -15,7 +15,7 @@ using namespace Zeni;
 using namespace Zeni::Collision;
 
 Game_World::Game_World()
-: m_point(Point3f(0, 45, 0)), m_normal(Vector3f(0, 0, 1)),
+: m_point(Point3f(0, 0, 0)), m_normal(Vector3f(0, 0, 1)),
 m_scale(Vector3f(1.0f, 1.0f, 1.0f)),
 m_rotation(Quaternion::Axis_Angle(Zeni::Vector3f(0.0f, 0.0f, 1.0f), 0.0f))
 
