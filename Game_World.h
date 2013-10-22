@@ -9,6 +9,7 @@
 #ifndef __game__Game_World__
 #define __game__Game_World__
 
+#include "Wall.h"
 #include <zenilib.h>
 #include <Zeni/Collision.h>
 #include <Zeni/Model.h>
@@ -47,6 +48,8 @@ private:
     
     // Level 4
     // A stationary Crate has no controls
+    
+    Wall m_wall;
 };
 
 

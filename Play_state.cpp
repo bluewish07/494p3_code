@@ -18,17 +18,12 @@ using namespace std;
 // with upside of the camera in neg-z direction
 Play_State::Play_State()
 :time_passed(0),
-m_world(),
-m_ball(Point3f(0.0f, 0.0f, 100.0f)),
-m_camera(Point3f(0.0f, -300.0f, 200.0f),
-         Quaternion(),
-         1.0f, 100000.0f),
+m_ball(Point3f(0.0f, 0.0f, 150.0f)),
+m_camera(Point3f(0.0f, -300.0f, 200.0f), Quaternion(), 1.0f, 100000.0f),
 m_velocity(0, 0, 0)
 {
     set_pausable(true);
-    m_camera.adjust_yaw(Global::pi_over_two); // camera facing pos-z direction
-    //m_camera.adjust_roll(Global::pi_over_two); // upside of the camera points pos-y
-    //m_camera.adjust_pitch(Global::pi_over_two/2);
+    m_camera.adjust_yaw(Global::pi_over_two);
     
 }
 void Play_State::on_push() {
@@ -107,8 +102,6 @@ void Play_State::bounce()
     Vector3f plane_normal = m_world.get_body().get_normal();
     Vector3f projection = plane_normal.normalized() * m_velocity * plane_normal.normalized();
     Vector3f along_plane = m_velocity - projection;
-    cout << plane_normal.z << " " << projection.x << "," << projection.y << "," << projection.z
-        << "   " << along_plane.x << "," << along_plane.y << "," << along_plane.z << endl;
     m_velocity = along_plane - projection;
     
     

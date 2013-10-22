@@ -17,8 +17,9 @@ using namespace Zeni::Collision;
 Game_World::Game_World()
 : m_point(Point3f(0, 0, 0)), m_normal(Vector3f(0, 0, 1)),
 m_scale(Vector3f(1.0f, 1.0f, 1.0f)),
-m_rotation(Quaternion::Axis_Angle(Zeni::Vector3f(0.0f, 0.0f, 1.0f), 0.0f))
-
+m_rotation(Quaternion::Axis_Angle(Zeni::Vector3f(0.0f, 0.0f, 1.0f), 0.0f)),
+m_wall(Point3f(20.0f, 50.0f, 0.0f), Vector3f(1.0f, 2.0f, 2.5f),
+       Quaternion::Axis_Angle(Vector3f(0.0f, 0.0f, 1.0f), Global::pi_over_two))
 {
     if(!m_instance_count)
         m_model = new Model("models/p3road.3DS");
@@ -44,6 +45,8 @@ void Game_World::render() {
     m_model->set_rotate(rotation.second, rotation.first);
     
     m_model->render();
+    
+    m_wall.render();
 }
 
 void Game_World::collide() {
