@@ -50,6 +50,15 @@ void Game_World::collide() {
     
 }
 
+void Game_World::tilt(const float &forward, const float &leftward)
+{
+    Quaternion rotation_helper(0, -forward, -leftward);
+    m_rotation += rotation_helper;
+    m_normal = rotation_helper * m_normal;
+    cout << "m_normal " << m_normal.x << "," << m_normal.y << endl;
+    create_body();
+}
+
 void Game_World::create_body() {
     m_body = Plane(m_point, m_normal);
     //m_source->set_position(m_corner + m_rotation * m_scale / 2.0f);

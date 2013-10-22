@@ -13,9 +13,9 @@
 using namespace Zeni;
 using namespace std;
 
-// left-hand coordinate system
+// right-hand coordinate system
 // default camera is facing positive-x direction
-// with upside of the camera in neg-z direction
+// with upside of the camera in pos-z direction
 Play_State::Play_State()
 :time_passed(0),
 m_world(),
@@ -26,9 +26,7 @@ m_camera(Point3f(0.0f, -300.0f, 200.0f),
 m_velocity(0, 0, 0)
 {
     set_pausable(true);
-    m_camera.adjust_yaw(Global::pi_over_two); // camera facing pos-z direction
-    //m_camera.adjust_roll(Global::pi_over_two); // upside of the camera points pos-y
-    //m_camera.adjust_pitch(Global::pi_over_two/2);
+    m_camera.adjust_yaw(Global::pi_over_two); // camera facing pos-y direction
     
 }
 void Play_State::on_push() {
@@ -42,19 +40,19 @@ void Play_State::on_pop() {
 
 void Play_State::on_key(const SDL_KeyboardEvent &event) {
     switch(event.keysym.sym) {
-        case SDLK_w:
+        case SDLK_UP:
             m_controls.forward = event.type == SDL_KEYDOWN;
             break;
             
-        case SDLK_a:
+        case SDLK_LEFT:
             m_controls.left = event.type == SDL_KEYDOWN;
             break;
             
-        case SDLK_s:
+        case SDLK_DOWN:
             m_controls.back = event.type == SDL_KEYDOWN;
             break;
             
-        case SDLK_d:
+        case SDLK_RIGHT:
             m_controls.right = event.type == SDL_KEYDOWN;
             break;
             
@@ -66,6 +64,12 @@ void Play_State::on_key(const SDL_KeyboardEvent &event) {
 
 void Play_State::perform_logic()
 {
+    float tilt_forward = (m_controls.forward - m_controls.back) * 0.2f;
+    float tilt_leftward = (m_controls.left - m_controls.right) * 0.2f;
+    //cout << tilt_forward << " " << tilt_leftward << endl;
+    m_world.tilt(tilt_forward, tilt_leftward);
+    
+    
     float time_total = m_chrono.seconds();
     float processing_time = time_total - time_passed;
     float time_step = processing_time > 0.005f ? 0.005f : processing_time;
