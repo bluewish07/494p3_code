@@ -45,7 +45,8 @@ private:
     
     Zeni::Vector3f m_velocity;
     
-    float time_cycle;
+    bool m_collided;
+    
     
     struct Controls {
         Controls() : forward(false), left(false), back(false), right(false) {}

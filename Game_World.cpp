@@ -16,12 +16,12 @@ using namespace Zeni::Collision;
 
 Game_World::Game_World()
 : m_point(Point3f(0, 0, 0)), m_normal(Vector3f(0, 0, 1)),
-m_scale(Vector3f(1.0f, 1.0f, 1.0f)),
-m_rotation(Quaternion::Axis_Angle(Zeni::Vector3f(0.0f, 0.0f, 1.0f), 0.0f))
-
+m_scale(Vector3f(1.0f, 1.0f, 10.0f)),
+m_rotation(Quaternion::Axis_Angle(Zeni::Vector3f(0.0f, 1.0f, 0.0f), Global::pi_over_two)),
+tilt_forward(0), tilt_leftward(Global::pi_over_two)
 {
     if(!m_instance_count)
-        m_model = new Model("models/p3road.3DS");
+        m_model = new Model("models/p3wall.3DS");
     ++m_instance_count;
     
     create_body();
@@ -42,6 +42,7 @@ void Game_World::render() {
     m_model->set_translate(m_point);
     m_model->set_scale(m_scale);
     m_model->set_rotate(rotation.second, rotation.first);
+    //m_model->set_rotate(m_rotation);
     
     m_model->render();
 }
@@ -52,10 +53,14 @@ void Game_World::collide() {
 
 void Game_World::tilt(const float &forward, const float &leftward)
 {
-    Quaternion rotation_helper(0, -forward, -leftward);
-    m_rotation += rotation_helper;
-    m_normal = rotation_helper * m_normal;
-    cout << "m_normal " << m_normal.x << "," << m_normal.y << endl;
+    tilt_forward += forward;
+    tilt_leftward += leftward;
+    m_rotation = Quaternion(0, -tilt_leftward, -tilt_forward);
+
+    Quaternion normal_rotation(0, -leftward, -forward);
+    
+    m_normal = normal_rotation * m_normal;
+    //cout << "m_normal " << m_normal.x << "," << m_normal.y << "," << m_normal.z << endl;
     create_body();
 }
 

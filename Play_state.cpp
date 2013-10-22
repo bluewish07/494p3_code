@@ -23,7 +23,7 @@ m_ball(Point3f(0.0f, 0.0f, 100.0f)),
 m_camera(Point3f(0.0f, -300.0f, 200.0f),
          Quaternion(),
          1.0f, 100000.0f),
-m_velocity(0, 0, 0)
+m_velocity(0, 0, 0), m_collided(false)
 {
     set_pausable(true);
     m_camera.adjust_yaw(Global::pi_over_two); // camera facing pos-y direction
@@ -64,14 +64,12 @@ void Play_State::on_key(const SDL_KeyboardEvent &event) {
 
 void Play_State::perform_logic()
 {
-    float tilt_forward = (m_controls.forward - m_controls.back) * 0.2f;
-    float tilt_leftward = (m_controls.left - m_controls.right) * 0.2f;
-    //cout << tilt_forward << " " << tilt_leftward << endl;
-    m_world.tilt(tilt_forward, tilt_leftward);
-    
-    
     float time_total = m_chrono.seconds();
     float processing_time = time_total - time_passed;
+    
+    float tilt_forward = (m_controls.forward - m_controls.back) * 0.05f * processing_time;
+    float tilt_leftward = (m_controls.left - m_controls.right) * 0.05f * processing_time;
+    
     float time_step = processing_time > 0.005f ? 0.005f : processing_time;
     for (; processing_time > 0.0f; processing_time -= time_step) {
         //  Gravity has its effect
@@ -80,10 +78,19 @@ void Play_State::perform_logic()
         // Try to move
         bool collided = partial_step(time_step);
         
-        if (collided) {
+        if (collided && !m_collided) {
+            //m_world.tilt(tilt_forward, tilt_leftward);
+            cout << collided << endl;
+            m_collided = true;
             bounce();
+            partial_step(time_step);
+        }
+        else if (!collided) {
+            m_world.tilt(tilt_forward, tilt_leftward);
+            m_collided = false;
         }
     }
+
     
     time_passed = time_total;
     
@@ -99,7 +106,7 @@ bool Play_State::partial_step(const float &time_step) {
     /** If collision with the plane has occurred, roll things back **/
     if(m_ball.get_body().intersects(m_world.get_body())) {
         cout << "collided" << endl;
-        m_ball.move_to(backup_position);
+        //m_ball.move_to(backup_position);
         result = true;
         
     }

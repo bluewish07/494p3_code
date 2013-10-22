@@ -43,6 +43,8 @@ private:
     Zeni::Vector3f m_normal;
     Zeni::Vector3f m_scale;
     Zeni::Quaternion m_rotation;
+    float tilt_forward;
+    float tilt_leftward;
     
     // Level 3
     Zeni::Collision::Plane m_body; // not motion so much as collision
