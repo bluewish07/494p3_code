@@ -5,5 +5,3 @@
  */
 
 #include <zenilib.h>
-
-#include "bootstrap.cpp"

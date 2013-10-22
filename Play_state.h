@@ -9,9 +9,9 @@
 #ifndef __game__Play_state__
 #define __game__Play_state__
 
-#include <zenilib.h>
 #include "Ball.h"
 #include "Game_World.h"
+#include <zenilib.h>
 
 class Play_State : public Zeni::Gamestate_Base {
     Play_State(const Play_State &);
@@ -56,7 +56,6 @@ private:
         bool back;
         bool right;
     } m_controls;
-    
     
 };
 
