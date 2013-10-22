@@ -13,9 +13,9 @@
 using namespace Zeni;
 using namespace std;
 
-// left-hand coordinate system
+// right-hand coordinate system
 // default camera is facing positive-x direction
-// with upside of the camera in neg-z direction
+// with upside of the camera in pos-z direction
 Play_State::Play_State()
 :time_passed(0),
 m_ball(Point3f(0.0f, 0.0f, 150.0f)),
@@ -37,19 +37,19 @@ void Play_State::on_pop() {
 
 void Play_State::on_key(const SDL_KeyboardEvent &event) {
     switch(event.keysym.sym) {
-        case SDLK_w:
+        case SDLK_UP:
             m_controls.forward = event.type == SDL_KEYDOWN;
             break;
             
-        case SDLK_a:
+        case SDLK_LEFT:
             m_controls.left = event.type == SDL_KEYDOWN;
             break;
             
-        case SDLK_s:
+        case SDLK_DOWN:
             m_controls.back = event.type == SDL_KEYDOWN;
             break;
             
-        case SDLK_d:
+        case SDLK_RIGHT:
             m_controls.right = event.type == SDL_KEYDOWN;
             break;
             
@@ -61,6 +61,12 @@ void Play_State::on_key(const SDL_KeyboardEvent &event) {
 
 void Play_State::perform_logic()
 {
+    float tilt_forward = (m_controls.forward - m_controls.back) * 0.2f;
+    float tilt_leftward = (m_controls.left - m_controls.right) * 0.2f;
+    //cout << tilt_forward << " " << tilt_leftward << endl;
+    m_world.tilt(tilt_forward, tilt_leftward);
+    
+    
     float time_total = m_chrono.seconds();
     float processing_time = time_total - time_passed;
     float time_step = processing_time > 0.005f ? 0.005f : processing_time;

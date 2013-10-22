@@ -28,6 +28,8 @@ public:
     
     void collide();
     
+    void tilt(const float &forward, const float &leftward);
+    
     const Zeni::Collision::Plane & get_body() const {return m_body;}
     
 private:
