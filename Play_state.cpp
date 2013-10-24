@@ -66,8 +66,9 @@ void Play_State::perform_logic()
     float time_total = m_chrono.seconds();
     float processing_time = time_total - time_passed;
     
-    float tilt_forward = (m_controls.forward - m_controls.back) * 0.05f * processing_time;
-    float tilt_leftward = (m_controls.left - m_controls.right) * 0.05f * processing_time;
+    float tilt_forward = (m_controls.forward - m_controls.back) * 0.2f * processing_time;
+    float tilt_leftward = (m_controls.left - m_controls.right) * 0.2f * processing_time;
+    m_world.tilt(tilt_forward, tilt_leftward);
     
     float time_step = processing_time > 0.005f ? 0.005f : processing_time;
     for (; processing_time > 0.0f; processing_time -= time_step) {
@@ -78,15 +79,16 @@ void Play_State::perform_logic()
         bool collided = partial_step(time_step);
         
         if (collided && !m_collided) {
-            //m_world.tilt(tilt_forward, tilt_leftward);
             cout << collided << endl;
             m_collided = true;
             bounce();
-            partial_step(time_step);
         }
         else if (!collided) {
-            m_world.tilt(tilt_forward, tilt_leftward);
             m_collided = false;
+        }
+        else {
+            cout << "stupid" << endl;
+            m_ball.move_to(m_world.get_plane_position(m_ball.get_body()));
         }
     }
 
@@ -99,13 +101,15 @@ void Play_State::perform_logic()
 bool Play_State::partial_step(const float &time_step) {
     bool result = false;
     const Point3f backup_position = m_ball.get_body().get_center();
+    //const Point3f backup_position = m_world.get_plane_position(m_ball.get_body());
     
     m_ball.move_to(m_velocity * time_step + backup_position);
     
     /** If collision with the plane has occurred, roll things back **/
-    if(m_ball.get_body().intersects(m_world.get_body())) {
-        cout << "collided" << endl;
-        //m_ball.move_to(backup_position);
+    if(m_ball.get_body().shortest_distance(m_world.get_body()) < 2) {
+        cout << m_ball.get_body().get_center().z << "collided" << endl;
+        m_ball.move_to(backup_position);
+        cout << m_ball.get_body().get_center().z << endl;
         result = true;
         
     }

@@ -16,6 +16,7 @@
 #include <Zeni/Quaternion.h>
 #include <Zeni/Sound.h>
 #include <Zeni/Vector3f.h>
+#include <Zeni/Collision.h>
 
 class Game_World {
 public:
@@ -26,7 +27,8 @@ public:
     
     void render();
     
-    void collide();
+    bool collide(const Zeni::Collision::Sphere &ball);
+    Zeni::Point3f get_plane_position(const Zeni::Collision::Sphere &ball);
     
     void tilt(const float &forward, const float &leftward);
     
