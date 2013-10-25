@@ -10,6 +10,7 @@
 #define __game__Game_World__
 
 #include "Wall.h"
+#include "Disk.h"
 #include <zenilib.h>
 #include <Zeni/Collision.h>
 #include <Zeni/Model.h>
@@ -32,7 +33,8 @@ public:
     
     void tilt(const float &forward, const float &leftward);
     
-    const Zeni::Collision::Plane & get_body() const {return m_body;}
+    // const Zeni::Collision::Plane & get_body() const {return m_body;}
+    Disk get_disk() const {return m_disk;}
     
 private:
     void create_body();
@@ -41,16 +43,20 @@ private:
     static Zeni::Model * m_model;
     static unsigned long m_instance_count;
     
+    Disk m_disk;
     // Level 2
+    /*
     Zeni::Point3f m_point;
     Zeni::Vector3f m_normal;
     Zeni::Vector3f m_scale;
     Zeni::Quaternion m_rotation;
     float tilt_forward;
     float tilt_leftward;
+     */
     
     // Level 3
-    Zeni::Collision::Plane m_body; // not motion so much as collision
+    // Zeni::Collision::Plane m_body; // not motion so much as collision
+    
     
     // Level 4
     // A stationary Crate has no controls

@@ -9,9 +9,11 @@
 #include "Play_state.h"
 #include <cmath>
 #include <iostream>
+#include <Zeni/Collision.h>
 
 using namespace Zeni;
 using namespace std;
+using namespace Zeni::Collision;
 
 // right-hand coordinate system
 // default camera is facing positive-x direction
@@ -106,7 +108,8 @@ bool Play_State::partial_step(const float &time_step) {
     m_ball.move_to(m_velocity * time_step + backup_position);
     
     /** If collision with the plane has occurred, roll things back **/
-    if(m_ball.get_body().shortest_distance(m_world.get_body()) < 2) {
+    if(m_ball.get_body().shortest_distance(Plane(m_world.get_disk().get_body().get_end_point_a(), m_world.get_disk().get_normal())) < 2
+       && m_ball.get_body().shortest_distance(m_world.get_disk().get_body()) < 2) {
         cout << m_ball.get_body().get_center().z << "collided" << endl;
         m_ball.move_to(backup_position);
         cout << m_ball.get_body().get_center().z << endl;
@@ -118,7 +121,7 @@ bool Play_State::partial_step(const float &time_step) {
 
 void Play_State::bounce()
 {
-    Vector3f plane_normal = m_world.get_body().get_normal();
+    Vector3f plane_normal = m_world.get_disk().get_normal();
     Vector3f projection = plane_normal.normalized() * m_velocity * plane_normal.normalized();
     Vector3f along_plane = m_velocity - projection;
     m_velocity = along_plane - projection;

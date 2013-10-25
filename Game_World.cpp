@@ -17,10 +17,7 @@ using namespace Zeni;
 using namespace Zeni::Collision;
 
 Game_World::Game_World()
-: m_point(Point3f(0, 0, 0)), m_normal(Vector3f(0, 0, 1)),
-m_scale(Vector3f(10.0f, 1.0f, 1.0f)),
-m_rotation(Quaternion::Axis_Angle(Zeni::Vector3f(0.0f, 0.0f, 1.0f), 0.0f)),
-tilt_forward(0), tilt_leftward(0),
+: m_disk(Point3f(0.0f, 0.0f, 0.0f), Point3f(0.0f, 0.0f, -10.f)),
 m_wall(Point3f(20.0f, 50.0f, 0.0f), Vector3f(1.0f, 2.0f, 2.5f),
        Quaternion::Axis_Angle(Vector3f(0.0f, 0.0f, 1.0f), Global::pi_over_two))
 {
@@ -41,19 +38,12 @@ Game_World::~Game_World() {
 }
 
 void Game_World::render() {
-    const std::pair<Vector3f, float> rotation = m_rotation.get_rotation();
+    m_disk.render();
     
-    m_model->set_translate(m_point);
-    m_model->set_scale(m_scale);
-    m_model->set_rotate(rotation.second, rotation.first);
-    //m_model->set_rotate(m_rotation);
-    
-    m_model->render();
-    
-    m_wall.render();
+    //m_wall.render();
 }
 
-bool Game_World::collide(const Sphere &ball) {
+/*bool Game_World::collide(const Sphere &ball) {
     Vector3f radius_vector = ball.get_radius() * m_normal.normalized();
     float vertical_projection = radius_vector * Vector3f(0, 0, 1);
     float cos_theta = vertical_projection / ball.get_radius();
@@ -67,10 +57,11 @@ bool Game_World::collide(const Sphere &ball) {
     
     return (ball.get_center().z - m_body.get_point().z) < (center_to_plane_vertical + plane_to_ground);
     
-}
+}*/
 
 Point3f Game_World::get_plane_position(const Sphere &ball)
 {
+    /*
     Vector3f radius_vector = ball.get_radius() * m_normal.normalized();
     float vertical_projection = radius_vector * Vector3f(0, 0, 1);
     float cos_theta = vertical_projection / ball.get_radius();
@@ -87,24 +78,18 @@ Point3f Game_World::get_plane_position(const Sphere &ball)
     }
     cout << "displace from " << ball.get_center().z << "to " << result.z << endl;
     
-    return result;
+     */
+    
+    return m_disk.get_plane_position(ball);
 }
 
 void Game_World::tilt(const float &forward, const float &leftward)
 {
-    tilt_forward += forward;
-    tilt_leftward += leftward;
-    m_rotation = Quaternion(0, -tilt_leftward, -tilt_forward);
-
-    Quaternion normal_rotation(0, -leftward, -forward);
-    
-    m_normal = normal_rotation * m_normal;
-    //cout << "m_normal " << m_normal.x << "," << m_normal.y << "," << m_normal.z << endl;
-    create_body();
+    m_disk.tilt(forward, leftward);
 }
 
 void Game_World::create_body() {
-    m_body = Plane(m_point, m_normal);
+    // m_body = Plane(m_point, m_normal);
     //m_source->set_position(m_corner + m_rotation * m_scale / 2.0f);
 }
 
