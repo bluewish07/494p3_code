@@ -30,10 +30,15 @@ public:
     
     void move_to(const Zeni::Point3f &pos);
     
+    void bounce(const Zeni::Vector3f &normal);
+    
     void collide();
     
     const Zeni::Collision::Sphere & get_body() const {return m_body;}
-    Zeni::Vector3f get_origin() const {return m_origin;}
+    
+    Zeni::Vector3f get_velocity() const {return m_velocity;}
+    void set_velocity(const Zeni::Vector3f &vel) {m_velocity = vel;}
+    //Zeni::Vector3f get_origin() const {return m_origin;}
     
 private:
     void create_body();
@@ -47,7 +52,9 @@ private:
     float m_radius;
     Zeni::Vector3f m_scale;
     Zeni::Quaternion m_rotation;
-    Zeni::Vector3f m_origin;
+    //Zeni::Vector3f m_origin;
+    Zeni::Vector3f m_velocity;
+    
     
     // Level 3
     Zeni::Collision::Sphere m_body; // not motion so much as collision

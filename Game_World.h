@@ -11,6 +11,7 @@
 
 #include "Wall.h"
 #include "Disk.h"
+#include "Ball.h"
 #include <zenilib.h>
 #include <Zeni/Collision.h>
 #include <Zeni/Model.h>
@@ -28,12 +29,11 @@ public:
     
     void render();
     
-    bool collide(const Zeni::Collision::Sphere &ball);
+    bool collide(Ball &ball, const Zeni::Point3f backup_position, bool should_bounce);
     Zeni::Point3f get_plane_position(const Zeni::Collision::Sphere &ball);
     
     void tilt(const float &forward, const float &leftward);
     
-    // const Zeni::Collision::Plane & get_body() const {return m_body;}
     Disk get_disk() const {return m_disk;}
     
 private:
@@ -44,22 +44,6 @@ private:
     static unsigned long m_instance_count;
     
     Disk m_disk;
-    // Level 2
-    /*
-    Zeni::Point3f m_point;
-    Zeni::Vector3f m_normal;
-    Zeni::Vector3f m_scale;
-    Zeni::Quaternion m_rotation;
-    float tilt_forward;
-    float tilt_leftward;
-     */
-    
-    // Level 3
-    // Zeni::Collision::Plane m_body; // not motion so much as collision
-    
-    
-    // Level 4
-    // A stationary Crate has no controls
     
     Wall m_wall;
 };

@@ -20,7 +20,8 @@ Ball::Ball(const Point3f &center_, const float &radius_,
              const Quaternion &rotation_)
 :m_center(center_), m_radius(radius_),
 m_scale(scale_),
-m_rotation(rotation_)
+m_rotation(rotation_),
+m_velocity(0.f, 0.f, 0.f)
 {
     if(!m_instance_count)
         m_model = new Model("models/p3ball.3DS");
@@ -61,6 +62,13 @@ void Ball::render() {
 
 void Ball::collide() {
 
+}
+
+void Ball::bounce(const Vector3f &normal)
+{
+    Vector3f projection = normal.normalized() * m_velocity * normal.normalized();
+    Vector3f along_plane = m_velocity - projection;
+    m_velocity = along_plane - projection;
 }
 
 void Ball::create_body() {
