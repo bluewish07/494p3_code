@@ -127,6 +127,7 @@ void Play_State::bounce()
 }
 
 void Play_State::render() {
+    m_camera.position.y = m_ball.get_body().get_center().y - 300;
     Video &vr = get_Video();
     vr.set_3d(m_camera);
     
