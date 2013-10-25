@@ -10,6 +10,7 @@
 
 #include <zenilib.h>
 #include <cmath>
+#include <algorithm>
 
 using namespace std;
 using namespace Zeni;
@@ -74,16 +75,17 @@ Point3f Game_World::get_plane_position(const Sphere &ball)
     float vertical_projection = radius_vector * Vector3f(0, 0, 1);
     float cos_theta = vertical_projection / ball.get_radius();
     float center_to_plane_vertical = ball.get_radius() / cos_theta;
-    
-    float x_dist = abs(ball.get_center().x - m_body.get_point().x);
+    float xy_dist = (Point3f(ball.get_center().x, ball.get_center().y, 0) - Point3f(m_body.get_point().x, m_body.get_point().y, 0)).magnitude();
     float theta = acos(cos_theta);
-    float plane_to_ground = x_dist * tan(theta);
+    float plane_to_ground = xy_dist * tan(theta);
+    
+    cout << center_to_plane_vertical + plane_to_ground << endl;
     
     Point3f result(ball.get_center().x, ball.get_center().y, center_to_plane_vertical + plane_to_ground + 5);
     if (result.z > ball.get_center().z + 20) {
         result.z = ball.get_center().z + 20;
     }
-    //cout << "displace from " << ball.get_center().z << "to " << result.z << endl;
+    cout << "displace from " << ball.get_center().z << "to " << result.z << endl;
     
     return result;
 }
