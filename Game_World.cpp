@@ -18,9 +18,9 @@ using namespace Zeni::Collision;
 
 Game_World::Game_World()
 {
-    if(!m_instance_count)
+    /*if(!m_instance_count)
         m_model = new Model("models/p3road.3DS");
-    ++m_instance_count;
+    ++m_instance_count;*/
     
     Wall* m_wall = new Wall(Point3f(20.0f, 50.0f, 0.0f), Vector3f(1.0f, 2.0f, 2.5f),
                             Quaternion::Axis_Angle(Vector3f(0.0f, 0.0f, 1.0f), Global::pi_over_two));
@@ -33,21 +33,21 @@ Game_World::Game_World()
     
     Disk* m_disk = new Disk (Point3f(0.0f, 0.0f, 0.0f), Point3f(0.0f, 0.0f, -10.f));
     m_disks.push_back(m_disk);
-    m_disk = new Disk (Point3f(0.0f, 250.0f, 0.0f), Point3f(0.0f, 250.0f, -10.f));
+    m_disk = new Disk (Point3f(0.0f, 250.0f, -50.0f), Point3f(0.0f, 250.0f, -60.f));
     m_disks.push_back(m_disk);
-    m_disk = new Disk (Point3f(0.0f, 500.0f, 0.0f), Point3f(0.0f, 500.0f, -10.f));
+    m_disk = new Disk (Point3f(0.0f, 500.0f, -100.0f), Point3f(0.0f, 500.0f, -110.f));
     m_disks.push_back(m_disk);
     
-    create_body();
+    //create_body();
 }
 
 
 Game_World::~Game_World() {
     
-    if(!--m_instance_count) {
+    /*if(!--m_instance_count) {
         delete m_model;
         m_model = 0lu;
-    }
+    }*/
     
     for (auto ptr : m_walls) {
         delete ptr;
@@ -91,10 +91,10 @@ void Game_World::tilt(const float &forward, const float &leftward)
     }
 }
 
-void Game_World::create_body() {
+/*void Game_World::create_body() {
     // m_body = Plane(m_point, m_normal);
     //m_source->set_position(m_corner + m_rotation * m_scale / 2.0f);
 }
 
 Model * Game_World::m_model = 0;
-unsigned long Game_World::m_instance_count = 0lu;
+unsigned long Game_World::m_instance_count = 0lu;*/

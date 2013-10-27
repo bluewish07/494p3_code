@@ -24,23 +24,22 @@
 class Game_World {
 public:
     Game_World();
-    Game_World(const Game_World &rhs) = delete;
-    Game_World & operator=(const Game_World &rhs) = delete;
     ~Game_World();
     
     void render();
     
     bool collide(Ball &ball, const Zeni::Point3f backup_position, bool should_bounce);
+    
     Zeni::Point3f get_plane_position(const Zeni::Collision::Sphere &ball);
     
     void tilt(const float &forward, const float &leftward);
     
 private:
-    void create_body();
+    //void create_body();
     
     // Level 1
-    static Zeni::Model * m_model;
-    static unsigned long m_instance_count;
+    /*static Zeni::Model * m_model;
+    static unsigned long m_instance_count;*/
     
     std::vector<Disk*> m_disks;
     
