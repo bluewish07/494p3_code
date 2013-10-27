@@ -21,9 +21,7 @@ using namespace Zeni::Collision;
 Play_State::Play_State()
 :time_passed(0),
 m_ball(Point3f(0.0f, 0.0f, 100.0f)),
-m_camera(Point3f(0.0f, -300.0f, 200.0f),
-         Quaternion(),
-         1.0f, 100000.0f),
+m_camera(Point3f(0.0f, -300.0f, 200.0f), Quaternion(), 1.0f, 100000.0f),
 m_collided(false)
 {
     set_pausable(true);

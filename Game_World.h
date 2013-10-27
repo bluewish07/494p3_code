@@ -19,6 +19,7 @@
 #include <Zeni/Sound.h>
 #include <Zeni/Vector3f.h>
 #include <Zeni/Collision.h>
+#include <vector>
 
 class Game_World {
 public:
@@ -34,8 +35,6 @@ public:
     
     void tilt(const float &forward, const float &leftward);
     
-    Disk get_disk() const {return m_disk;}
-    
 private:
     void create_body();
     
@@ -43,9 +42,9 @@ private:
     static Zeni::Model * m_model;
     static unsigned long m_instance_count;
     
-    Disk m_disk;
+    std::vector<Disk*> m_disks;
     
-    Wall m_wall;
+    std::vector<Wall*> m_walls;
 };
 
 
