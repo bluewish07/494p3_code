@@ -44,7 +44,6 @@ private:
     
     bool m_collided;
     
-    
     struct Controls {
         Controls() : forward(false), left(false), back(false), right(false) {}
         

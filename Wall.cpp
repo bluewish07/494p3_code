@@ -1,7 +1,9 @@
 #include "Wall.h"
+#include <iostream>
 
 using namespace Zeni;
 using namespace Zeni::Collision;
+using namespace std;
 
 Wall::Wall(const Point3f &corner_,
              const Vector3f &scale_,
@@ -65,6 +67,28 @@ void Wall::create_body() {
                             m_rotation * m_scale.get_k());
     
     //m_source->set_position(m_corner + m_rotation * m_scale / 2.0f);
+}
+
+Point3f Wall::get_plane_position(const Sphere &ball)
+{
+    Vector3f normal = m_body.get_edge_b();
+    Vector3f radius_vector = ball.get_radius() * normal.normalized();
+    float projection = radius_vector * Vector3f(0.0f, 1.0f, 0.0f);
+    float cos_theta = projection / ball.get_radius();
+    float center_to_plane = ball.get_radius() / cos_theta;
+    float xz_dist = (Point3f(ball.get_center().x, 0, ball.get_center().z) - Point3f(m_body.get_point().x, 0, m_body.get_point().z)).magnitude();
+    float theta = acos(cos_theta);
+    float plane_to_wall = xz_dist * tan(theta);
+    
+    cout << center_to_plane + plane_to_wall << endl;
+    
+    Point3f result(ball.get_center().x, center_to_plane + plane_to_wall + 5, ball.get_center().z);
+    if (result.y > ball.get_center().y + 20) {
+        result.y = ball.get_center().y + 20;
+    }
+    cout << "displace from " << ball.get_center().z << "to " << result.z << endl;
+    
+    return result;
 }
 
 Model * Wall::m_model = 0;

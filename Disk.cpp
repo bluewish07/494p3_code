@@ -99,6 +99,7 @@ void Disk::collide() {
      m_source->play();*/
 }
 
+
 Point3f Disk::get_plane_position(const Sphere &ball)
 {
     Vector3f normal = m_body.get_end_point_a() - m_body.get_end_point_b();

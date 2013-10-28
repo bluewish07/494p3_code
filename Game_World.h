@@ -19,6 +19,7 @@
 #include <Zeni/Sound.h>
 #include <Zeni/Vector3f.h>
 #include <Zeni/Collision.h>
+#include <vector>
 
 #include <vector>
 #include <deque>
@@ -36,23 +37,22 @@ public:
     void render();
     
     bool collide(Ball &ball, const Zeni::Point3f backup_position, bool should_bounce);
+    
     Zeni::Point3f get_plane_position(const Zeni::Collision::Sphere &ball);
     
     void tilt(const float &forward, const float &leftward);
-    
-    Disk get_disk() const {return m_disk;}
     
     void update_disks_in_view(const Zeni::Point3f &camera_position);
     
     
 private:
-    void create_body();
+    //void create_body();
     
     // Level 1
-    static Zeni::Model * m_model;
-    static unsigned long m_instance_count;
+    /*static Zeni::Model * m_model;
+    static unsigned long m_instance_count;*/
     
-    Disk m_disk;
+    std::vector<Disk*> m_disks;
     
     std::deque<Disk> disks_in_view;
     
@@ -60,6 +60,8 @@ private:
     
     
     Wall m_wall;
+    std::vector<Wall*> m_walls;
+
 };
 
 
