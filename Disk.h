@@ -18,17 +18,17 @@ public:
     Disk & operator=(const Disk &rhs);
     ~Disk();
     
-    Zeni::Point3f get_plane_position(const Zeni::Collision::Sphere &ball);
-    void tilt(const float &forward, const float &leftward);
-
-    
     void render();
     
     void collide();
     
     const Zeni::Collision::Capsule & get_body() const {return m_body;}
     
+    Zeni::Point3f get_plane_position(const Zeni::Collision::Sphere &ball);
+    
     const Zeni::Vector3f get_normal() const {return m_end_point_a - m_end_point_b;}
+    
+    void tilt(const float &forward, const float &leftward);
     
 private:
     void create_body();

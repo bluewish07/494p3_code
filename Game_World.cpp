@@ -22,20 +22,18 @@ Game_World::Game_World()
         m_model = new Model("models/p3road.3DS");
     ++m_instance_count;*/
     
-    Wall* m_wall = new Wall(Point3f(20.0f, 50.0f, 0.0f), Vector3f(1.0f, 2.0f, 2.5f),
-                            Quaternion::Axis_Angle(Vector3f(0.0f, 0.0f, 1.0f), Global::pi_over_two));
+    Wall* m_wall = new Wall(Point3f(0.0f, 50.0f, 0.0f), Vector3f(1.0f, 1.0f, 1.0f));
     m_walls.push_back(m_wall);
     
-    m_wall = new Wall(Point3f(20.0f, 500.0f, 0.0f), Vector3f(1.0f, 2.0f, 2.5f),
-                      Quaternion::Axis_Angle(Vector3f(0.0f, 0.0f, 1.0f), Global::pi_over_two));
+    m_wall = new Wall(Point3f(20.0f, 200.0f, 0.0f), Vector3f(1.0f, 1.0f, 1.0f));
     
     m_walls.push_back(m_wall);
     
     Disk* m_disk = new Disk (Point3f(0.0f, 0.0f, 0.0f), Point3f(0.0f, 0.0f, -10.f));
     m_disks.push_back(m_disk);
-    m_disk = new Disk (Point3f(0.0f, 250.0f, -50.0f), Point3f(0.0f, 250.0f, -60.f));
+    m_disk = new Disk (Point3f(100.0f, 250.0f, -100.0f), Point3f(100.0f, 250.0f, -110.f));
     m_disks.push_back(m_disk);
-    m_disk = new Disk (Point3f(0.0f, 500.0f, -100.0f), Point3f(0.0f, 500.0f, -110.f));
+    m_disk = new Disk (Point3f(-30.0f, 500.0f, -200.0f), Point3f(-30.0f, 500.0f, -210.f));
     m_disks.push_back(m_disk);
     
     //create_body();
@@ -49,8 +47,12 @@ Game_World::~Game_World() {
         m_model = 0lu;
     }*/
     
-    for (auto ptr : m_walls) {
-        delete ptr;
+    for (auto disk_ptr : m_disks) {
+        delete disk_ptr;
+    }
+    
+    for (auto wall_ptr : m_walls) {
+        delete wall_ptr;
     }
 }
 
@@ -68,15 +70,33 @@ bool Game_World::collide(Ball &ball, const Point3f backup_position, bool should_
     for (auto disk_ptr : m_disks) {
         if(ball.get_body().shortest_distance(Plane(disk_ptr->get_body().get_end_point_a(), disk_ptr->get_normal())) < 2
            && ball.get_body().shortest_distance(disk_ptr->get_body()) < 2) {
-            cout << ball.get_body().get_center().z << "collided" << endl;
+            //cout << ball.get_body().get_center().z << "collided" << endl;
             ball.move_to(backup_position);
-            cout << ball.get_body().get_center().z << endl;
+            //cout << ball.get_body().get_center().z << endl;
             if (should_bounce) {
                 ball.bounce(disk_ptr->get_body().get_end_point_a() - disk_ptr->get_body().get_end_point_b());
-            }
-            else {
+            } else {
                 cout << "stupid" << endl;
                 ball.move_to(disk_ptr->get_plane_position(ball.get_body()));
+            }
+            return true;
+        }
+    }
+    for (auto wall_ptr : m_walls) {
+        /*cout << ball.get_body().shortest_distance(Plane(wall_ptr->get_body().get_point(), wall_ptr->get_body().get_normal_b())) << endl;
+        cout << ball.get_body().get_center().x << " " << wall_ptr->get_body().get_point().x - ball.get_body().get_radius() << endl;
+        cout << ball.get_body().get_center().x << " " << wall_ptr->get_body().get_point().x + 2*(wall_ptr->get_body().get_center().x - wall_ptr->get_body().get_point().x) - ball.get_body().get_radius()<< endl;*/
+        if(ball.get_body().shortest_distance(Plane(wall_ptr->get_body().get_point(), wall_ptr->get_body().get_normal_b())) < 2
+           && (ball.get_body().get_center().x > wall_ptr->get_body().get_point().x - ball.get_body().get_radius() &&
+               ball.get_body().get_center().x < wall_ptr->get_body().get_point().x + 2*(wall_ptr->get_body().get_center().x - wall_ptr->get_body().get_point().x) + ball.get_body().get_radius())) {
+            //cout << ball.get_body().get_center().y << "collide with wall" << endl;
+            ball.move_to(backup_position);
+            //cout << ball.get_body().get_center().y << endl;
+            if (should_bounce) {
+                ball.bounce(wall_ptr->get_body().get_edge_b());
+            } else {
+                cout << "stupid" << endl;
+                ball.move_to(wall_ptr->get_plane_position(ball.get_body()));
             }
             return true;
         }

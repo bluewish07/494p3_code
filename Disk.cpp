@@ -66,6 +66,12 @@ void Disk::collide() {
      m_source->play();*/
 }
 
+void Disk::create_body() {
+    m_body = Capsule(m_end_point_a, m_end_point_b, m_radius);
+    
+    //m_source->set_position(m_corner + m_rotation * m_scale / 2.0f);
+}
+
 Point3f Disk::get_plane_position(const Sphere &ball)
 {
     Vector3f normal = m_body.get_end_point_a() - m_body.get_end_point_b();
@@ -107,13 +113,6 @@ void Disk::tilt(const float &forward, const float &leftward)
     m_end_point_b = mid_point - normal/2;
     //cout << "m_normal " << m_normal.x << "," << m_normal.y << "," << m_normal.z << endl;
     create_body();
-}
-
-
-void Disk::create_body() {
-    m_body = Capsule(m_end_point_a, m_end_point_b, m_radius);
-    
-    //m_source->set_position(m_corner + m_rotation * m_scale / 2.0f);
 }
 
 Model * Disk::m_model = 0;

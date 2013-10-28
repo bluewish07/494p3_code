@@ -24,6 +24,8 @@
 class Game_World {
 public:
     Game_World();
+    Game_World(const Game_World &rhs) = delete;
+    Game_World & operator=(const Game_World &rhs) = delete;
     ~Game_World();
     
     void render();

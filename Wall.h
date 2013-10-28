@@ -23,6 +23,8 @@ public:
     
     const Zeni::Collision::Parallelepiped & get_body() const {return m_body;}
     
+    Zeni::Point3f get_plane_position(const Zeni::Collision::Sphere &ball);
+    
 private:
     void create_body();
     

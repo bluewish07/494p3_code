@@ -78,10 +78,8 @@ void Play_State::perform_logic()
         // move
         partial_step(time_step);
     }
-
     
     time_passed = time_total;
-    
     
 }
 
