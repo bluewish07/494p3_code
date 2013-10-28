@@ -32,6 +32,8 @@ m_collided(false)
 }
 void Play_State::on_push() {
     get_Window().set_mouse_state(Window::MOUSE_HIDDEN);
+    m_world.read_disk_positions("maps/test.txt");
+    m_world.update_disks_in_view(m_camera.position);
     m_chrono.start();
 }
 

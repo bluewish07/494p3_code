@@ -20,12 +20,18 @@
 #include <Zeni/Vector3f.h>
 #include <Zeni/Collision.h>
 
+#include <vector>
+#include <deque>
+#include <string>
+
 class Game_World {
 public:
     Game_World();
     Game_World(const Game_World &rhs) = delete;
     Game_World & operator=(const Game_World &rhs) = delete;
     ~Game_World();
+    
+    void read_disk_positions(std::string filename);
     
     void render();
     
@@ -36,6 +42,9 @@ public:
     
     Disk get_disk() const {return m_disk;}
     
+    void update_disks_in_view(const Zeni::Point3f &camera_position);
+    
+    
 private:
     void create_body();
     
@@ -44,6 +53,11 @@ private:
     static unsigned long m_instance_count;
     
     Disk m_disk;
+    
+    std::deque<Disk> disks_in_view;
+    
+    std::vector<Zeni::Point3f> disk_positions; // sorted by y
+    
     
     Wall m_wall;
 };

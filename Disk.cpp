@@ -5,6 +5,8 @@ using namespace Zeni;
 using namespace Zeni::Collision;
 using namespace std;
 
+queue<Zeni::Model *> Disk::reusable_models;
+
 Disk::Disk(const Point3f &end_point_a, const Point3f &end_point_b, const float &radius_,
            const Vector3f &scale_, const Quaternion &rotation_)
 : m_end_point_a(end_point_a), m_end_point_b(end_point_b),
@@ -12,9 +14,19 @@ m_radius(radius_), m_scale(scale_), m_rotation(rotation_),
 tilt_forward(0), tilt_leftward(0)
 {
     //m_source(new Sound_Source(get_Sounds()["collide"]))
+    /*
     if(!m_instance_count)
         m_model = new Model("models/p3disk.3ds");
     ++m_instance_count;
+     */
+    
+    if (reusable_models.empty()) {
+        m_model = new Model("models/p3disk.3ds");
+    }
+    else {
+        m_model = reusable_models.front();
+        reusable_models.pop();
+    }
     
     create_body();
 }
@@ -22,9 +34,17 @@ tilt_forward(0), tilt_leftward(0)
 Disk::Disk(const Disk &rhs)
 : m_end_point_a(rhs.m_end_point_a), m_end_point_b(rhs.m_end_point_b),
 m_radius(rhs.m_radius),
-m_scale(rhs.m_scale), m_rotation(rhs.m_rotation)
+m_scale(rhs.m_scale), m_rotation(rhs.m_rotation),
+tilt_forward(rhs.tilt_forward), tilt_leftward(rhs.tilt_leftward)
 {
-    ++m_instance_count;
+    if (reusable_models.empty()) {
+        m_model = new Model("models/p3disk.3ds");
+    }
+    else {
+        m_model = reusable_models.front();
+        reusable_models.pop();
+    }
+
     
     create_body();
 }
@@ -36,18 +56,31 @@ Disk & Disk::operator=(const Disk &rhs) {
     m_scale = rhs.m_scale;
     m_rotation = rhs.m_rotation;
     
+    tilt_forward = rhs.tilt_forward;
+    tilt_leftward = rhs.tilt_leftward;
+    
+    if (reusable_models.empty()) {
+        m_model = new Model("models/p3disk.3ds");
+    }
+    else {
+        m_model = reusable_models.front();
+        reusable_models.pop();
+    }
+    
     create_body();
     
     return *this;
 }
 
 Disk::~Disk() {
-    
+    /*
     //delete m_source;
     if(!--m_instance_count) {
         delete m_model;
         m_model = 0lu;
     }
+     */
+    reusable_models.push(m_model);
 }
 
 void Disk::render() {
@@ -116,5 +149,6 @@ void Disk::create_body() {
     //m_source->set_position(m_corner + m_rotation * m_scale / 2.0f);
 }
 
-Model * Disk::m_model = 0;
+//Model * Disk::m_model = 0;
 unsigned long Disk::m_instance_count = 0lu;
+

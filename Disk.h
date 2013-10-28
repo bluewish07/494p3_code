@@ -8,6 +8,8 @@
 #include <Zeni/Sound.h>
 #include <Zeni/Vector3f.h>
 
+#include <queue>
+
 class Disk {
 public:
     Disk(const Zeni::Point3f &end_point_a, const Zeni::Point3f &end_point_b,
@@ -30,12 +32,17 @@ public:
     
     const Zeni::Vector3f get_normal() const {return m_end_point_a - m_end_point_b;}
     
+    float get_tilt_forward() const {return tilt_forward;}
+    float get_tilt_leftward() const {return tilt_leftward;}
+    
 private:
     void create_body();
     
     // Level 1
-    static Zeni::Model * m_model;
+    Zeni::Model * m_model;
     static unsigned long m_instance_count;
+    
+    static std::queue<Zeni::Model *> reusable_models;
     
     //Zeni::Sound_Source * m_source;
     
@@ -48,6 +55,7 @@ private:
     
     float tilt_forward;
     float tilt_leftward;
+    
     
     // Level 3
     Zeni::Collision::Capsule m_body; // not motion so much as collision
