@@ -20,8 +20,8 @@ using namespace Zeni::Collision;
 // with upside of the camera in pos-z direction
 Play_State::Play_State()
 :time_passed(0),
-m_ball(Point3f(0.0f, 0.0f, 100.0f)),
-m_camera(Point3f(0.0f, -300.0f, 200.0f), Quaternion(), 1.0f, 100000.0f),
+m_ball(Point3f(0.0f, 0.0f, 200.0f)),
+m_camera(Point3f(0.0f, -200.0f, 300.0f), Quaternion(), 1.0f, 100000.0f),
 m_collided(false)
 {
     set_pausable(true);
@@ -95,6 +95,7 @@ void Play_State::partial_step(const float &time_step) {
 
 void Play_State::render() {
     m_camera.position.y = m_ball.get_body().get_center().y - 300;
+    m_world.update_disks_in_view(m_camera.position);
     Video &vr = get_Video();
     vr.set_3d(m_camera);
     

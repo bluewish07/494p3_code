@@ -44,6 +44,8 @@ public:
     
     void update_disks_in_view(const Zeni::Point3f &camera_position);
     
+    Zeni::Point3f reset(); // return the ball's position to reset to
+    
     
 private:
     //void create_body();

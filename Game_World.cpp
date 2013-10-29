@@ -25,12 +25,12 @@ Game_World::Game_World()
         m_model = new Model("models/p3road.3DS");
     ++m_instance_count;*/
     
-    Wall* m_wall = new Wall(Point3f(0.0f, 50.0f, 0.0f), Vector3f(1.0f, 1.0f, 1.0f));
-    m_walls.push_back(m_wall);
+    //Wall* m_wall = new Wall(Point3f(0.0f, 50.0f, 100.0f), Vector3f(1.0f, 1.0f, 1.0f));
+    //m_walls.push_back(m_wall);
     
-    m_wall = new Wall(Point3f(20.0f, 200.0f, 0.0f), Vector3f(1.0f, 1.0f, 1.0f));
+    //m_wall = new Wall(Point3f(20.0f, 200.0f, 80.0f), Vector3f(1.0f, 1.0f, 1.0f));
     
-    m_walls.push_back(m_wall);
+    //m_walls.push_back(m_wall);
     
     //create_body();
 }
@@ -84,8 +84,9 @@ bool Game_World::collide(Ball &ball, const Point3f backup_position, bool should_
             continue;
         
         if(ball.get_body().shortest_distance(Plane(itr->get_body().get_end_point_a(), itr->get_normal())) < 2
-           && ball.get_body().shortest_distance(itr->get_body()) < 2) {
-            //cout << ball.get_body().get_center().z << "collided" << endl;
+        //&& ball.get_body().shortest_distance(itr->get_body()) < 2) {
+           && (ball.get_body().get_center() - itr->get_body().get_end_point_a()).get_ij().magnitude() < itr->get_body().get_radius() + ball.get_body().get_radius() + 2) {
+            //cout << ball.get_body().shortest_distance(Plane(itr->get_body().get_end_point_a(), itr->get_normal())) << endl;
             ball.move_to(backup_position);
             //cout << ball.get_body().get_center().z << endl;
             if (should_bounce) {
@@ -151,7 +152,7 @@ void Game_World::update_disks_in_view(const Point3f &camera_position)
     // insert disks in the front if the camera moves backward
     auto itr1 = upper_bound(disk_positions.begin(), disk_positions.end(),
                             camera_position - Point3f(0, 200, 0), y_comparator);
-    float insert_front_upper_bound = disks_in_view.empty()? camera_position.y + 500 : disks_in_view[0].get_body().get_end_point_a().y;
+    float insert_front_upper_bound = disks_in_view.empty()? camera_position.y + 900 : disks_in_view[0].get_body().get_end_point_a().y;
     float tilt_forward = disks_in_view.empty()? 0 : disks_in_view[0].get_tilt_forward();
     float tilt_leftward = disks_in_view.empty()? 0 : disks_in_view[0].get_tilt_leftward();
     int index = 0;
@@ -168,7 +169,7 @@ void Game_World::update_disks_in_view(const Point3f &camera_position)
     if (!disks_in_view.empty()) {
         Point3f disk_position = disks_in_view[disks_in_view.size()-1].get_body().get_end_point_a();
         float distance = disk_position.y - camera_position.y;
-        while (distance > 500) {
+        while (distance > 900) {
             disks_in_view.erase(disks_in_view.end()-1);
             disk_position = disks_in_view[disks_in_view.size()-1].get_body().get_end_point_a();
             distance = disk_position.y - camera_position.y;
@@ -182,12 +183,17 @@ void Game_World::update_disks_in_view(const Point3f &camera_position)
                                 camera_position.y - 200 : disks_in_view[disks_in_view.size()-1].get_body().get_end_point_a().y;
     auto itr2 = upper_bound(disk_positions.begin(), disk_positions.end(),
                             Point3f(0, append_lower_bound, 0), y_comparator);
-    while (itr2 != disk_positions.end() && itr2->y < camera_position.y + 500) {
+    while (itr2 != disk_positions.end() && itr2->y < camera_position.y + 900) {
         Disk new_disk(*itr2, *itr2- Point3f(0, 0, 10));
         new_disk.tilt(tilt_forward, tilt_leftward);
         disks_in_view.push_back(new_disk);
         itr2 ++;
     }
+    
+}
+
+Point3f Game_World::reset()
+{
     
 }
 
