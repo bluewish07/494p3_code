@@ -44,6 +44,8 @@ private:
     
     bool m_collided;
     
+    float m_collision_time;
+    
     struct Controls {
         Controls() : forward(false), left(false), back(false), right(false) {}
         

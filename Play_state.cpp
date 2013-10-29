@@ -22,7 +22,7 @@ Play_State::Play_State()
 :time_passed(0),
 m_ball(Point3f(0.0f, 0.0f, 200.0f)),
 m_camera(Point3f(0.0f, -200.0f, 300.0f), Quaternion(), 1.0f, 100000.0f),
-m_collided(false), m_lives(3)
+m_collided(false), m_collision_time(0.0f), m_lives(3)
 {
     set_pausable(true);
     m_camera.adjust_yaw(Global::pi_over_two);
@@ -67,6 +67,12 @@ void Play_State::on_key(const SDL_KeyboardEvent &event) {
 void Play_State::perform_logic()
 {
     float time_total = m_chrono.seconds();
+    
+    if (time_total - m_collision_time > 5.0f) {
+        cout << "end";
+        on_pop();
+    }
+    
     float processing_time = time_total - time_passed;
     
     float tilt_forward = (m_controls.forward - m_controls.back) * 0.2f * processing_time;
@@ -81,6 +87,9 @@ void Play_State::perform_logic()
         // move
         partial_step(time_step);
     }
+    
+    if (m_collided)
+        m_collision_time = time_total;
     
     time_passed = time_total;
     
