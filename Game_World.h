@@ -9,8 +9,8 @@
 #ifndef __game__Game_World__
 #define __game__Game_World__
 
-#include "Wall.h"
 #include "Disk.h"
+#include "Wall.h"
 #include "Ball.h"
 #include <zenilib.h>
 #include <Zeni/Collision.h>
@@ -32,8 +32,6 @@ public:
     Game_World & operator=(const Game_World &rhs) = delete;
     ~Game_World();
     
-    void read_disk_positions(std::string filename);
-    
     void render();
     
     bool collide(Ball &ball, const Zeni::Point3f backup_position, bool should_bounce);
@@ -42,7 +40,13 @@ public:
     
     void tilt(const float &forward, const float &leftward);
     
-    void update_disks_in_view(const Zeni::Point3f &camera_position);
+    void read_disk_positions(std::string filename);
+    
+    void read_wall_positions(std::string filename);
+    
+    void update_view(const Zeni::Point3f &camera_position);
+    
+    Zeni::Point3f reset(); // return the ball's position to reset to
     
     
 private:
@@ -58,9 +62,11 @@ private:
     
     std::vector<Zeni::Point3f> disk_positions; // sorted by y
     
-    
-    Wall m_wall;
     std::vector<Wall*> m_walls;
+    
+    std::deque<Wall> walls_in_view;
+    
+    std::vector<Zeni::Point3f> wall_positions;
 
 };
 
