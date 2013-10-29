@@ -30,8 +30,9 @@ m_collided(false), m_lives(3)
 }
 void Play_State::on_push() {
     get_Window().set_mouse_state(Window::MOUSE_HIDDEN);
-    m_world.read_disk_positions("maps/test.txt");
-    m_world.update_disks_in_view(m_camera.position);
+    m_world.read_disk_positions("maps/disks_locs.txt");
+    m_world.read_wall_positions("maps/walls_locs.txt");
+    m_world.update_view(m_camera.position);
     m_chrono.start();
 }
 
@@ -100,7 +101,8 @@ void Play_State::render() {
         m_camera.position.z = ideal_height < m_camera.position.z - 1 ? m_camera.position.z - 1 : ideal_height;
     }
     cout << ideal_height << " " << m_camera.position.z << endl;
-    m_world.update_disks_in_view(m_camera.position);
+    m_world.update_view(m_camera.position);
+
     Video &vr = get_Video();
     vr.set_3d(m_camera);
     
