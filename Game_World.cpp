@@ -25,7 +25,7 @@ Game_World::Game_World()
      ++m_instance_count;*/
     
     /*Wall* m_wall = new Wall(Point3f(0.0f, 50.0f, 0.0f), Vector3f(1.0f, 1.0f, 1.0f));
-    m_walls.push_back(m_wall);*/
+     m_walls.push_back(m_wall);*/
     
     //m_wall = new Wall(Point3f(20.0f, 200.0f, 80.0f), Vector3f(1.0f, 1.0f, 1.0f));
     
@@ -154,10 +154,13 @@ void Game_World::update_view(const Point3f &camera_position)
     if (!disks_in_view.empty()) {
         Point3f disk_position = disks_in_view[0].get_body().get_end_point_a();
         float distance = disk_position.y - camera_position.y;
-        while (distance < -200 && !disks_in_view.empty()) {
+        while (distance < -200) {
             disks_in_view.erase(disks_in_view.begin());
-            disk_position = disks_in_view[0].get_body().get_end_point_a();
-            distance = disk_position.y - camera_position.y;
+            if (!disks_in_view.empty()) {
+                disk_position = disks_in_view[0].get_body().get_end_point_a();
+                distance = disk_position.y - camera_position.y;
+            } else
+                break;
         }
     }
     
@@ -165,10 +168,13 @@ void Game_World::update_view(const Point3f &camera_position)
     if (!walls_in_view.empty()) {
         Point3f wall_position = walls_in_view[0].get_body().get_point();
         float distance = wall_position.y - camera_position.y;
-        while (distance < -200 && !walls_in_view.empty()) {
+        while (distance < -200) {
             walls_in_view.erase(walls_in_view.begin());
-            wall_position = walls_in_view[0].get_body().get_point();
-            distance = wall_position.y - camera_position.y;
+            if (!walls_in_view.empty()) {
+                wall_position = walls_in_view[0].get_body().get_point();
+                distance = wall_position.y - camera_position.y;
+            } else
+                break;
         }
     }
     
@@ -207,8 +213,11 @@ void Game_World::update_view(const Point3f &camera_position)
         float distance = disk_position.y - camera_position.y;
         while (distance > 900) {
             disks_in_view.erase(disks_in_view.end()-1);
-            disk_position = disks_in_view[disks_in_view.size()-1].get_body().get_end_point_a();
-            distance = disk_position.y - camera_position.y;
+            if (!disks_in_view.empty()) {
+                disk_position = disks_in_view[disks_in_view.size()-1].get_body().get_end_point_a();
+                distance = disk_position.y - camera_position.y;
+            } else
+                break;
         }
     }
     
@@ -218,8 +227,11 @@ void Game_World::update_view(const Point3f &camera_position)
         float distance = wall_position.y - camera_position.y;
         while (distance > 900) {
             walls_in_view.erase(walls_in_view.end()-1);
-            wall_position = walls_in_view[walls_in_view.size()-1].get_body().get_point();
-            distance = wall_position.y - camera_position.y;
+            if (!walls_in_view.empty()) {
+                wall_position = walls_in_view[walls_in_view.size()-1].get_body().get_point();
+                distance = wall_position.y - camera_position.y;
+            } else
+                break;
         }
     }
     
