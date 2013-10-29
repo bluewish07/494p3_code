@@ -46,6 +46,8 @@ public:
     
     Zeni::Point3f reset(); // return the ball's position to reset to
     
+    float get_ideal_camera_height();
+    
     
 private:
     //void create_body();
@@ -54,14 +56,13 @@ private:
     /*static Zeni::Model * m_model;
     static unsigned long m_instance_count;*/
     
-    std::vector<Disk*> m_disks;
     
     std::deque<Disk> disks_in_view;
     
     std::vector<Zeni::Point3f> disk_positions; // sorted by y
     
     
-    Wall m_wall;
+    // Wall m_wall;
     std::vector<Wall*> m_walls;
 
 };

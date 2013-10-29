@@ -22,7 +22,7 @@ Play_State::Play_State()
 :time_passed(0),
 m_ball(Point3f(0.0f, 0.0f, 200.0f)),
 m_camera(Point3f(0.0f, -200.0f, 300.0f), Quaternion(), 1.0f, 100000.0f),
-m_collided(false)
+m_collided(false), m_lives(3)
 {
     set_pausable(true);
     m_camera.adjust_yaw(Global::pi_over_two);
@@ -95,6 +95,11 @@ void Play_State::partial_step(const float &time_step) {
 
 void Play_State::render() {
     m_camera.position.y = m_ball.get_body().get_center().y - 300;
+    float ideal_height = m_world.get_ideal_camera_height();
+    if (!(ideal_height < -.9 && ideal_height > -1.1)) {
+        m_camera.position.z = ideal_height < m_camera.position.z - 1 ? m_camera.position.z - 1 : ideal_height;
+    }
+    cout << ideal_height << " " << m_camera.position.z << endl;
     m_world.update_disks_in_view(m_camera.position);
     Video &vr = get_Video();
     vr.set_3d(m_camera);

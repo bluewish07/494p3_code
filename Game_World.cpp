@@ -194,9 +194,23 @@ void Game_World::update_disks_in_view(const Point3f &camera_position)
 
 Point3f Game_World::reset()
 {
-    
+    // reset disks
+    for (auto itr = disks_in_view.begin(); itr != disks_in_view.end(); ++itr) {
+        itr->tilt(-itr->get_tilt_forward(), -itr->get_tilt_leftward());
+        assert(!itr->get_tilt_forward() && !itr->get_tilt_leftward());
+    }
+
+    return disks_in_view[0].get_body().get_end_point_a() + Point3f(0, 0, 100);
 }
 
+float Game_World::get_ideal_camera_height()
+{
+    if (disks_in_view.empty()) {
+        return -1;
+    }
+    else
+        return disks_in_view[disks_in_view.size()/2].get_body().get_end_point_a().z + 200;
+}
 /*void Game_World::create_body() {
     // m_body = Plane(m_point, m_normal);
     //m_source->set_position(m_corner + m_rotation * m_scale / 2.0f);

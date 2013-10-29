@@ -53,6 +53,8 @@ private:
         bool right;
     } m_controls;
     
+    int m_lives;
+    
 };
 
 #endif /* defined(__game__Play_state__) */
