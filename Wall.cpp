@@ -71,7 +71,23 @@ void Wall::create_body() {
 
 Point3f Wall::get_plane_position(const Sphere &ball)
 {
+    /*Vector3f normal = m_body.get_normal_b();
+    Vector3f radius_vector = ball.get_radius() * normal.normalized();
+    float projection = radius_vector * Vector3f(0.0f, 1.0f, 0.0f);
+    float cos_theta = projection / ball.get_radius();
+    float center_to_plane = ball.get_radius() / cos_theta;
+    float xz_dist = (Point3f(ball.get_center().x, 0, ball.get_center().z) - Point3f(m_body.get_point().x, 0, m_body.get_point().z)).magnitude();
+    float theta = acos(cos_theta);
+    float plane_to_wall = xz_dist * tan(theta);*/
+    
+    //cout << center_to_plane + plane_to_wall << endl;
+    //cout << ball.get_center().y
     Point3f result(ball.get_center().x, m_body.get_point().y - ball.get_radius() - 5, ball.get_center().z);
+    /*if (result.y > ball.get_center().y + 20) {
+        result.y = ball.get_center().y + 20;
+    }*/
+    cout << "wall: displace from " << ball.get_center().y << "to " << result.y << endl;
+    
     return result;
 }
 

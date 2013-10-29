@@ -56,13 +56,13 @@ private:
     /*static Zeni::Model * m_model;
     static unsigned long m_instance_count;*/
     
-    std::vector<Disk*> m_disks;
+    //std::vector<Disk*> m_disks;
     
     std::deque<Disk> disks_in_view;
     
     std::vector<Zeni::Point3f> disk_positions; // sorted by y
     
-    std::vector<Wall*> m_walls;
+    //std::vector<Wall*> m_walls;
     
     std::deque<Wall> walls_in_view;
     
