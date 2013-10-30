@@ -19,29 +19,11 @@ using namespace Zeni;
 using namespace Zeni::Collision;
 
 Game_World::Game_World()
-{
-    /*if(!m_instance_count)
-     m_model = new Model("models/p3road.3DS");
-     ++m_instance_count;*/
-    
-    /*Wall* m_wall = new Wall(Point3f(0.0f, 50.0f, 0.0f), Vector3f(1.0f, 1.0f, 1.0f));
-     m_walls.push_back(m_wall);*/
-    
-    //m_wall = new Wall(Point3f(20.0f, 200.0f, 80.0f), Vector3f(1.0f, 1.0f, 1.0f));
-    
-    //m_walls.push_back(m_wall);
-    
-    //create_body();
-}
+{}
 
 
 Game_World::~Game_World() {
-    
-    /*if(!--m_instance_count) {
-     delete m_model;
-     m_model = 0lu;
-     }*/
-    
+    delete m_home;
     
 }
 
@@ -124,6 +106,9 @@ void Game_World::read_disk_positions(string filename)
         int z = stoi(line.substr(second_space+1));
         disk_positions.push_back(Point3f(x, y, z));
     }
+    Zeni::Point3f home_position = disk_positions[disk_positions.size()-1];
+    m_home = new Home(home_position, home_position-Point3f(0, 0, 10));
+    disk_positions.erase(disk_positions.end()-1);
     
 }
 
@@ -278,7 +263,12 @@ float Game_World::get_ideal_camera_height()
         return -1;
     }
     else
-        return disks_in_view[disks_in_view.size()/2].get_body().get_end_point_a().z + 200;
+        return disks_in_view[0].get_body().get_end_point_a().z + 200;
+}
+
+bool Game_World::is_home(Zeni::Point3f ball_pos)
+{
+    return (ball_pos - m_home->get_position()).magnitude() < 120;
 }
 /*void Game_World::create_body() {
  // m_body = Plane(m_point, m_normal);

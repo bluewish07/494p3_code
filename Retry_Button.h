@@ -11,17 +11,22 @@
 
 #include <zenilib.h>
 #include <string>
+#include <iostream>
 
 class Retry_Button : public Zeni::Text_Button {
 public:
-    Retry_Button(int lives_left)
+    Retry_Button(Zeni::Point3f restart_pos, int lives_left_)
     : Zeni::Text_Button(Zeni::Point2f(50.0f, 50.0f),
                         Zeni::Point2f(250.0f, 100.0f),
                         "system_36_800x600",
-                        Zeni::String("X " + std::to_string(lives_left)))
+                        Zeni::String("X " + std::to_string(lives_left_))),
+    restart_position(restart_pos), lives_left(lives_left_)
     {}
     
     void on_accept() override;
+private:
+    Zeni::Point3f restart_position;
+    int lives_left;
     
 };
 

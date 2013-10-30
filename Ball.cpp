@@ -76,5 +76,12 @@ void Ball::create_body() {
     //m_source->set_position(m_corner + m_rotation * m_scale / 2.0f);
 }
 
+void Ball::reset(const Zeni::Point3f &pos)
+{
+    m_center = pos;
+    create_body();
+    m_velocity = Vector3f();
+}
+
 Model * Ball::m_model = 0;
 unsigned long Ball::m_instance_count = 0lu;

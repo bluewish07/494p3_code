@@ -14,9 +14,9 @@ using namespace Zeni;
 
 const int last_level_c = 3;
 
-Retry_State::Retry_State(int lives_left_)
+Retry_State::Retry_State(Point3f restart_pos, int lives_left_)
 : Widget_Gamestate(std::make_pair(Zeni::Point2f(0.0f, 0.0f), Zeni::Point2f(800.0f, 600.0f))),
-lives_left(lives_left_), button(lives_left)
+lives_left(lives_left_), button(restart_pos, lives_left_)
 {
 
     button.set_upper_left(Point2f(500, 400));

@@ -12,6 +12,7 @@
 #include "Disk.h"
 #include "Wall.h"
 #include "Ball.h"
+#include "Home.h"
 #include <zenilib.h>
 #include <Zeni/Collision.h>
 #include <Zeni/Model.h>
@@ -50,6 +51,8 @@ public:
     
     float get_ideal_camera_height();
     
+    bool is_home(Zeni::Point3f ball_pos);
+    
     
 private:
     //void create_body();
@@ -67,6 +70,8 @@ private:
     std::deque<Wall> walls_in_view;
 
     std::vector<Zeni::Point3f> wall_positions;
+    
+    Home *m_home;
 
 
 };
