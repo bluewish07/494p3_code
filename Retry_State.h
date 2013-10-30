@@ -17,7 +17,7 @@ class Retry_State : public Zeni::Widget_Gamestate {
     Retry_State operator=(const Retry_State &);
     
 public:
-    Retry_State(int lives_left_);
+    Retry_State(Zeni::Point3f restart_pos, int lives_left_);
     
 private:
     int lives_left;

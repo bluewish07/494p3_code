@@ -38,7 +38,6 @@ public:
 private:
     void create_body();
     
-    // Level 1
     Zeni::Model * m_model;
     static unsigned long m_instance_count;
     
@@ -46,7 +45,6 @@ private:
     
     //Zeni::Sound_Source * m_source;
     
-    // Level 2
     Zeni::Point3f m_end_point_a;
     Zeni::Point3f m_end_point_b;
     float m_radius;
@@ -57,11 +55,8 @@ private:
     float tilt_leftward;
     
     
-    // Level 3
-    Zeni::Collision::Capsule m_body; // not motion so much as collision
+    Zeni::Collision::Capsule m_body; 
     
-    // Level 4
-    // A stationary Crate has no controls
 };
 
 #endif

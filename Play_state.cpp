@@ -7,6 +7,8 @@
 //
 
 #include "Play_state.h"
+#include "Retry_State.h"
+#include "Result_State.h"
 #include <cmath>
 #include <iostream>
 #include <Zeni/Collision.h>
@@ -18,11 +20,11 @@ using namespace Zeni::Collision;
 // right-hand coordinate system
 // default camera is facing positive-x direction
 // with upside of the camera in pos-z direction
-Play_State::Play_State()
+Play_State::Play_State(Zeni::Point3f ball_position, int lives)
 :time_passed(0),
-m_ball(Point3f(0.0f, 0.0f, 200.0f)),
+m_ball(ball_position),
 m_camera(Point3f(0.0f, -200.0f, 300.0f), Quaternion(), 1.0f, 100000.0f),
-m_collided(false), m_collision_time(0.0f), m_lives(3)
+m_collided(false), m_collision_time(0.0f), m_lives(lives)
 {
     set_pausable(true);
     m_camera.adjust_yaw(Global::pi_over_two);
@@ -68,9 +70,27 @@ void Play_State::perform_logic()
 {
     float time_total = m_chrono.seconds();
     
-    if (time_total - m_collision_time > 5.0f) {
+    // winning condition detection
+    if (m_world.is_home(m_ball.get_body().get_center())) {
+        get_Game().pop_state();
+        get_Game().push_state(new Result_State(true));
+    }
+    
+    // losing condition detection
+    if (time_total - m_collision_time > 2.0f) {
         cout << "end";
-        on_pop();
+        m_lives--;
+        if (m_lives) {
+            Point3f ball_position = m_world.reset();
+            m_ball.reset(ball_position);
+            get_Game().pop_state();
+            get_Game().push_state(new Retry_State(ball_position, m_lives));
+        }
+        else {
+            get_Game().pop_state();
+            get_Game().push_state(new Result_State(false));
+        }
+        
     }
     
     float processing_time = time_total - time_passed;
@@ -88,9 +108,6 @@ void Play_State::perform_logic()
         partial_step(time_step);
     }
     
-    if (m_collided)
-        m_collision_time = time_total;
-    
     time_passed = time_total;
     
 }
@@ -100,6 +117,9 @@ void Play_State::partial_step(const float &time_step) {
     
     m_ball.move_to(m_ball.get_velocity() * time_step + backup_position);
     m_collided = m_world.collide(m_ball, backup_position, !m_collided);
+    if (m_collided)
+        m_collision_time = m_chrono.seconds();
+
 }
 
 
@@ -117,4 +137,11 @@ void Play_State::render() {
     
     m_world.render();
     m_ball.render();
+}
+
+void Play_State::reset()
+{
+    m_chrono.reset();
+    m_collided = false;
+    m_collision_time = 0;
 }

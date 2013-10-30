@@ -12,7 +12,7 @@
 #include <iostream>
 
 #include <zenilib.h>
-// #include "Next_level_Button.h"
+#include "Main_menu_Button.h"
 
 class Result_State : public Zeni::Widget_Gamestate {
     Result_State(const Result_State &);
@@ -23,7 +23,7 @@ public:
     
 private:
     bool passed;
-    // Next_level_Button button;
+    Main_menu_Button button;
     
     void render();
 };

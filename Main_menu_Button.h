@@ -18,7 +18,7 @@ public:
     : Zeni::Text_Button(Zeni::Point2f(50.0f, 50.0f),
                         Zeni::Point2f(250.0f, 100.0f),
                         "system_36_800x600",
-                        Zeni::String("Back to Main Menu"))
+                        Zeni::String("Main Menu"))
     {}
     
     void on_accept() override;
