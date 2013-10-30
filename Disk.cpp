@@ -111,36 +111,47 @@ Point3f Disk::get_plane_position(const Sphere &ball)
     float theta = acos(cos_theta);
     float plane_to_ground = xy_dist * tan(theta);
     
-    cout << center_to_plane_vertical + plane_to_ground << endl;
+    //cout << center_to_plane_vertical + plane_to_ground << endl;
     
     Point3f result(ball.get_center().x, ball.get_center().y, center_to_plane_vertical + plane_to_ground + 5);
     if (result.z > ball.get_center().z + 20) {
         result.z = ball.get_center().z + 20;
     }
-    cout << "displace from " << ball.get_center().z << "to " << result.z << endl;
+    //cout << "displace from " << ball.get_center().z << "to " << result.z << endl;
     
     return result;
 }
 
 void Disk::tilt(const float &forward, const float &leftward)
 {
-    tilt_forward += forward;
-    tilt_leftward += leftward;
-    m_rotation = Quaternion(0, -tilt_leftward, -tilt_forward);
-    
-    Quaternion normal_rotation(0, -leftward, -forward);
-    
-    Vector3f normal = m_body.get_end_point_a() - m_body.get_end_point_b();
-    normal = normal_rotation * normal;
-    Point3f mid_point = (m_body.get_end_point_a() + m_body.get_end_point_b());
-    mid_point.x /= 2;
-    mid_point.y /= 2;
-    mid_point.z /= 2;
-    
-    m_end_point_a = mid_point + normal/2;
-    m_end_point_b = mid_point - normal/2;
-    //cout << "m_normal " << m_normal.x << "," << m_normal.y << "," << m_normal.z << endl;
-    create_body();
+    float tilt_forward_result = tilt_forward + forward;
+    float tilt_leftward_result = tilt_leftward + leftward;
+    bool body_change = false;
+    if (tilt_forward_result > -0.6 && tilt_forward_result < 0.6) {
+        tilt_forward = tilt_forward_result;
+        body_change = true;
+    }
+    if (tilt_leftward_result > -0.6 && tilt_leftward_result < 0.6) {
+        tilt_leftward = tilt_leftward_result;
+        body_change = true;
+    }
+    if (body_change) {
+        m_rotation = Quaternion(0, -tilt_leftward, -tilt_forward);
+        
+        Quaternion normal_rotation(0, -leftward, -forward);
+        
+        Vector3f normal = m_body.get_end_point_a() - m_body.get_end_point_b();
+        normal = normal_rotation * normal;
+        Point3f mid_point = (m_body.get_end_point_a() + m_body.get_end_point_b());
+        mid_point.x /= 2;
+        mid_point.y /= 2;
+        mid_point.z /= 2;
+        
+        m_end_point_a = mid_point + normal/2;
+        m_end_point_b = mid_point - normal/2;
+        //cout << "m_normal " << m_normal.x << "," << m_normal.y << "," << m_normal.z << endl;
+        create_body();
+    }
 }
 
 
