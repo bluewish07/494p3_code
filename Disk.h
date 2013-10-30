@@ -13,7 +13,7 @@
 class Disk {
 public:
     Disk(const Zeni::Point3f &end_point_a, const Zeni::Point3f &end_point_b,
-         const float &radius_ = 120.0f,
+         const bool alt = false, const float &radius_ = 120.0f,
          const Zeni::Vector3f &scale_ = Zeni::Vector3f(3.0f, 3.0f, 1.0f),
          const Zeni::Quaternion &rotation_ = Zeni::Quaternion::Axis_Angle(Zeni::Vector3f(0.0f, 0.0f, 1.0f), 0.0f));
     Disk(const Disk &rhs);

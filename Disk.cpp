@@ -7,8 +7,8 @@ using namespace std;
 
 queue<Zeni::Model *> Disk::reusable_models;
 
-Disk::Disk(const Point3f &end_point_a, const Point3f &end_point_b, const float &radius_,
-           const Vector3f &scale_, const Quaternion &rotation_)
+Disk::Disk(const Point3f &end_point_a, const Point3f &end_point_b, const bool alt,
+           const float &radius_, const Vector3f &scale_, const Quaternion &rotation_)
 : m_end_point_a(end_point_a), m_end_point_b(end_point_b),
 m_radius(radius_), m_scale(scale_), m_rotation(rotation_),
 tilt_forward(0), tilt_leftward(0)
@@ -21,7 +21,10 @@ tilt_forward(0), tilt_leftward(0)
      */
     
     if (reusable_models.empty()) {
-        m_model = new Model("models/p3disk.3ds");
+        if (alt)
+            m_model = new Model("models/p3disk.3ds");
+        else
+            m_model = new Model("models/p3disk.3ds");
     }
     else {
         m_model = reusable_models.front();
@@ -127,11 +130,11 @@ void Disk::tilt(const float &forward, const float &leftward)
     float tilt_forward_result = tilt_forward + forward;
     float tilt_leftward_result = tilt_leftward + leftward;
     bool body_change = false;
-    if (tilt_forward_result > -0.6 && tilt_forward_result < 0.6) {
+    if (tilt_forward_result > -0.45 && tilt_forward_result < 0.45) {
         tilt_forward = tilt_forward_result;
         body_change = true;
     }
-    if (tilt_leftward_result > -0.6 && tilt_leftward_result < 0.6) {
+    if (tilt_leftward_result > -0.45 && tilt_leftward_result < 0.456) {
         tilt_leftward = tilt_leftward_result;
         body_change = true;
     }
