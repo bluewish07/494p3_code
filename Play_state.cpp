@@ -129,7 +129,7 @@ void Play_State::render() {
     if (!(ideal_height < -.9 && ideal_height > -1.1)) {
         m_camera.position.z = ideal_height < m_camera.position.z - 1 ? m_camera.position.z - 1 : ideal_height;
     }
-    cout << ideal_height << " " << m_camera.position.z << endl;
+    // cout << ideal_height << " " << m_camera.position.z << endl;
     m_world.update_view(m_camera.position);
 
     Video &vr = get_Video();
