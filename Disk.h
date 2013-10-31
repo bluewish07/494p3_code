@@ -43,6 +43,8 @@ private:
     
     static std::queue<Zeni::Model *> reusable_models;
     
+    static bool model_num;
+    
     //Zeni::Sound_Source * m_source;
     
     Zeni::Point3f m_end_point_a;

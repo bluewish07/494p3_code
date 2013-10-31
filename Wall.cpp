@@ -80,7 +80,8 @@ Point3f Wall::get_plane_position(const Ball &ball)
     /*if (result.y > ball.get_center().y + 20) {
         result.y = ball.get_center().y + 20;
     }*/
-    cout << "wall: displace from " << ball.get_body().get_center().y << "to " << result.y << endl;
+    //cout << "wall: displace from " << ball.get_center().y << "to " << result.y << endl;
+
     
     return result;
 }
