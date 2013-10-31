@@ -134,7 +134,7 @@ void Disk::tilt(const float &forward, const float &leftward)
         tilt_forward = tilt_forward_result;
         body_change = true;
     }
-    if (tilt_leftward_result > -0.45 && tilt_leftward_result < 0.456) {
+    if (tilt_leftward_result > -0.45 && tilt_leftward_result < 0.45) {
         tilt_leftward = tilt_leftward_result;
         body_change = true;
     }
