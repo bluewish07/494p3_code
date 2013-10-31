@@ -20,7 +20,7 @@ Home::Home(const Zeni::Point3f &end_point_a, const Zeni::Point3f &end_point_b,
 : m_end_point_a(end_point_a), m_end_point_b(end_point_b), m_radius(radius_),
 m_scale(scale_), m_rotation(rotation_)
 {
-    m_model = new Model("models/p3disk.3ds");
+    m_model = new Model("models/nest.3ds");
     create_body();
 }
 

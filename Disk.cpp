@@ -22,10 +22,10 @@ tilt_forward(0), tilt_leftward(0)
     
     if (reusable_models.empty()) {
         if (model_num) {
-            m_model = new Model("models/p3disk.3ds");
+            m_model = new Model("models/disk.3ds");
         }
         else
-            m_model = new Model("models/p3disk.3ds");
+            m_model = new Model("models/disk2.3ds");
         model_num = !model_num;
     }
     else {
@@ -44,9 +44,9 @@ tilt_forward(rhs.tilt_forward), tilt_leftward(rhs.tilt_leftward)
 {
     if (reusable_models.empty()) {
         if (model_num)
-            m_model = new Model("models/p3disk.3ds");
+            m_model = new Model("models/disk.3ds");
         else
-            m_model = new Model("models/p3disk.3ds");
+            m_model = new Model("models/disk2.3ds");
         model_num = !model_num;
     }
     else {
@@ -70,9 +70,9 @@ Disk & Disk::operator=(const Disk &rhs) {
     
     if (reusable_models.empty()) {
         if (model_num)
-            m_model = new Model("models/p3disk.3ds");
+            m_model = new Model("models/disk.3ds");
         else
-            m_model = new Model("models/p3disk.3ds");
+            m_model = new Model("models/disk2.3ds");
         model_num = !model_num;
     }
     else {

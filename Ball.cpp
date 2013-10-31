@@ -24,7 +24,7 @@ m_rotation(rotation_),
 m_velocity(0.f, 0.f, 0.f)
 {
     if(!m_instance_count)
-        m_model = new Model("models/p3ball.3DS");
+        m_model = new Model("models/ball.3DS");
     ++m_instance_count;
     
     //m_origin = m_center;

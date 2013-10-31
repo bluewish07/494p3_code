@@ -35,6 +35,7 @@ void Game_World::render() {
     for (auto itr : walls_in_view) {
         itr.render();
     }
+    m_home->render();
 }
 
 bool Game_World::collide(Ball &ball, const Point3f backup_position, bool should_bounce) {

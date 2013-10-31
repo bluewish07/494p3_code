@@ -12,7 +12,7 @@ Wall::Wall(const Point3f &corner_,
 {
     //m_source(new Sound_Source(get_Sounds()["collide"]))
     if(!m_instance_count)
-        m_model = new Model("models/p3wall.3ds");
+        m_model = new Model("models/wall.3ds");
     ++m_instance_count;
     
     create_body();
@@ -62,7 +62,7 @@ void Wall::collide() {
 
 void Wall::create_body() {
     m_body = Parallelepiped(m_corner,
-                            m_rotation * (100 * m_scale.get_i()),
+                            m_rotation * (150 * m_scale.get_i()),
                             m_rotation * (10 * m_scale.get_j()),
                             m_rotation * (200 * m_scale.get_k()));
     
