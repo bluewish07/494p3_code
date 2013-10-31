@@ -76,7 +76,7 @@ bool Game_World::collide(Ball &ball, const Point3f backup_position, bool should_
                    ball.bounce(itr.get_body().get_edge_b());
                } else {
                    cout << "stupid" << endl;
-                   ball.move_to(itr.get_plane_position(ball.get_body()));
+                   ball.move_to(itr.get_plane_position(ball));
                }
                return true;
            }

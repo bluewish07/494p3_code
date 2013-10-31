@@ -1,12 +1,14 @@
 #ifndef WALL_H
 #define WALL_H
 
+
 #include <zenilib.h>
 #include <Zeni/Collision.h>
 #include <Zeni/Model.h>
 #include <Zeni/Quaternion.h>
 #include <Zeni/Sound.h>
 #include <Zeni/Vector3f.h>
+#include "Ball.h"
 
 class Wall {
 public:
@@ -23,7 +25,7 @@ public:
     
     const Zeni::Collision::Parallelepiped & get_body() const {return m_body;}
     
-    Zeni::Point3f get_plane_position(const Zeni::Collision::Sphere &ball);
+    Zeni::Point3f get_plane_position(const Ball &ball);
     
 private:
     void create_body();

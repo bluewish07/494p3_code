@@ -9,6 +9,7 @@
 #ifndef __game__Retry_Button__
 #define __game__Retry_Button__
 
+#include <cstdlib>
 #include <zenilib.h>
 #include <string>
 #include <iostream>

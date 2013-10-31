@@ -18,7 +18,7 @@ class Play_State : public Zeni::Gamestate_Base {
     Play_State operator=(const Play_State &);
     
 public:
-    Play_State(Zeni::Point3f ball_position = Zeni::Point3f(0.0f, 0.0f, 200.0f), int lives = 3);
+    Play_State(Zeni::Point3f ball_position = Zeni::Point3f(0.0f, 0.0f, 200.0f), int lives = 5);
     
     void on_push();
     

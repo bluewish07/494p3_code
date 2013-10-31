@@ -38,7 +38,6 @@ public:
     
     Zeni::Vector3f get_velocity() const {return m_velocity;}
     void set_velocity(const Zeni::Vector3f &vel) {m_velocity = vel;}
-    //Zeni::Vector3f get_origin() const {return m_origin;}
     
     void reset(const Zeni::Point3f &pos);
     
