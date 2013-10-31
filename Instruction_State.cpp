@@ -31,18 +31,30 @@ void Instructions_State::on_key(const SDL_KeyboardEvent &event) {
 void Instructions_State::render() {
     Widget_Gamestate::render();
     
+    Zeni::Font &narrative = get_Fonts()["system_36_800x600"];
+    narrative.render_text("Your task is to help the ball bounce its way home.\nYou will tilt the boucy disks, and physics will do it.\n",
+                          Point2f(400, 50),
+                          get_Colors()["title_text"],
+                          ZENI_CENTER);
+    
     Zeni::Font &fr = get_Fonts()["title"];
     
-    fr.render_text(
-#if defined(_WINDOWS)
-                   "ALT+F4"
-#elif defined(_MACOSX)
-                   "Apple+Q"
-#else
-                   "Ctrl+Q"
-#endif
-                   " to Quit",
-                   Point2f(400.0f, 300.0f - 0.5f * fr.get_text_height()),
+    fr.render_text("Use ARROW KEYS!",
+                   Point2f(400.0f, 200.0f - 0.5f * fr.get_text_height()),
+                   get_Colors()["title_text"],
+                   ZENI_CENTER);
+    
+    narrative.render_text("<-- -->              tilt to the left/right\nup/down arrows     tilt forward/backward",
+                          Point2f(100.0f, 300.0f),
+                          get_Colors()["title_text"]);
+    
+    Zeni::Font &sm_title = get_Fonts()["small_title"];
+    sm_title.render_text("TIP: \nYou do not want the ball to sprint.\n",
+                         Point2f(10, 380),
+                         get_Colors()["title_text"]);
+    
+    fr.render_text("SLOW DOWN!",
+                   Point2f(400, 500),
                    get_Colors()["title_text"],
                    ZENI_CENTER);
 }
