@@ -69,7 +69,7 @@ bool Game_World::collide(Ball &ball, const Point3f backup_position, bool should_
                ball.get_body().get_center().x < itr.get_body().get_point().x + 2*(itr.get_body().get_center().x - itr.get_body().get_point().x) + ball.get_body().get_radius())
            && (ball.get_body().get_center().z > itr.get_body().get_point().z - ball.get_body().get_radius() &&
                ball.get_body().get_center().z < itr.get_body().get_point().z + 2*(itr.get_body().get_center().z - itr.get_body().get_point().z) + ball.get_body().get_radius())) {
-               //cout << ball.get_body().get_center().y << "collide with wall" << endl;
+               cout << ball.get_body().get_center().y << "collide with wall" << endl;
                ball.move_to(backup_position);
                //cout << ball.get_body().get_center().y << endl;
                if (should_bounce) {

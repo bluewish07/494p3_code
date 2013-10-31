@@ -62,9 +62,9 @@ void Wall::collide() {
 
 void Wall::create_body() {
     m_body = Parallelepiped(m_corner,
-                            m_rotation * m_scale.get_i(),
-                            m_rotation * m_scale.get_j(),
-                            m_rotation * m_scale.get_k());
+                            m_rotation * (100 * m_scale.get_i()),
+                            m_rotation * (10 * m_scale.get_j()),
+                            m_rotation * (200 * m_scale.get_k()));
     
     //m_source->set_position(m_corner + m_rotation * m_scale / 2.0f);
 }
